@@ -60,3 +60,5 @@ target_link_libraries(
   otpc-conn
   ${Boost_LIBRARIES}
 )
+
+add_subdirectory(udp)
