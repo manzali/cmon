@@ -41,12 +41,12 @@ include_directories(
 )
 
 add_library(
-  otpc-conn
-  otpc-conn.cpp
+  webserver
+  webserver.cpp
 )
 
 target_link_libraries(
-  otpc-conn
+  webserver
   ${Boost_LIBRARIES}
 )
 
@@ -57,7 +57,7 @@ add_executable(
 
 target_link_libraries(
   cmon
-  otpc-conn
+  webserver
   ${Boost_LIBRARIES}
 )
 
