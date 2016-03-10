@@ -1,21 +1,20 @@
 #include <iostream>
+#include <chrono>
 
-#include <boost/lexical_cast.hpp>
-
+#include "engine.hpp"
 #include "webserver.hpp"
 
 int main(int argc, char* argv[]) {
-  try {
-    int port = 10001;
-    if (argc > 1) {
-      port = boost::lexical_cast<int>(argv[1]);
-    }
-    boost::asio::io_service io_service;
-    webserver s(io_service, port);
-    io_service.run();
-  } catch (std::exception& e) {
-    std::cerr << e.what() << std::endl;
-  }
+
+  int n_threads = 10;
+  engine e(n_threads);
+
+  int port = 10001;
+  webserver s(e.get(), port);
+
+  std::this_thread::sleep_for(std::chrono::seconds(10));
+
+  e.stop();
 
   return 0;
 }
