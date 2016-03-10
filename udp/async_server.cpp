@@ -3,12 +3,12 @@
 #include <boost/bind.hpp>
 #include <boost/asio.hpp>
 
-using boost::asio::ip::udp;
-
 class udp_server {
  public:
   udp_server(boost::asio::io_service& io_service, int port)
-      : socket_(io_service, udp::endpoint(udp::v4(), port)) {
+      : socket_(
+          io_service,
+          boost::asio::ip::udp::endpoint(boost::asio::ip::udp::v4(), port)) {
     post_receive();
   }
 
@@ -33,8 +33,8 @@ class udp_server {
     post_receive();
   }
 
-  udp::socket socket_;
-  udp::endpoint remote_endpoint_;
+  boost::asio::ip::udp::socket socket_;
+  boost::asio::ip::udp::endpoint remote_endpoint_;
   boost::array<char, 128> recv_buffer_;
 };
 
