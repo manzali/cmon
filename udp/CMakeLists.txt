@@ -4,6 +4,26 @@ include_directories(
 )
 
 add_executable(
+  daytime_async_server
+  daytime_async_server.cpp
+)
+
+target_link_libraries(
+  daytime_async_server
+  ${Boost_LIBRARIES}
+)
+
+add_executable(
+  daytime_sync_client
+  daytime_sync_client.cpp
+)
+
+target_link_libraries(
+  daytime_sync_client
+  ${Boost_LIBRARIES}
+)
+
+add_executable(
   async_server
   async_server.cpp
 )
@@ -20,15 +40,5 @@ add_executable(
 
 target_link_libraries(
   sync_client
-  ${Boost_LIBRARIES}
-)
-
-add_executable(
-  sync_server
-  sync_server.cpp
-)
-
-target_link_libraries(
-  sync_server
   ${Boost_LIBRARIES}
 )
