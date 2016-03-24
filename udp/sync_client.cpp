@@ -26,7 +26,7 @@ int main(int argc, char* argv[]) {
     for (int i = 0; i < 1000; ++i) {
       std::string str = std::to_string(i);
       socket.send_to(boost::asio::buffer(str), receiver_endpoint);
-      std::this_thread::sleep_for(std::chrono::milliseconds(1));
+      //std::this_thread::sleep_for(std::chrono::milliseconds(1));
     }
 
   } catch (std::exception& e) {
