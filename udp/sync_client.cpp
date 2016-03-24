@@ -14,8 +14,10 @@ int main(int argc, char* argv[]) {
     boost::asio::io_service io_service;
 
     boost::asio::ip::udp::resolver resolver(io_service);
-    boost::asio::ip::udp::resolver::query query(boost::asio::ip::udp::v4(),
-                                                argv[1], "7000");
+    boost::asio::ip::udp::resolver::query query(
+        boost::asio::ip::udp::v4(),
+        argv[1],
+        "7000");
     boost::asio::ip::udp::endpoint receiver_endpoint = *resolver.resolve(query);
 
     boost::asio::ip::udp::socket socket(io_service);

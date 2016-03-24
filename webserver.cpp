@@ -20,8 +20,10 @@ void handle_connection(std::shared_ptr<boost::asio::ip::tcp::socket> socket) {
         "HTTP/1.0 200 OK\r\nContent-Type: text/html\r\n\r\n"
             "<html><head><title>test</title>"
             "</head><body><h1>Test</h1><p>This is a test!</p></body></html>";
-    boost::asio::write(*socket, boost::asio::buffer(message),
-                       boost::asio::transfer_all());
+    boost::asio::write(
+        *socket,
+        boost::asio::buffer(message),
+        boost::asio::transfer_all());
     socket->close();
   } catch (std::exception& ex) {
     std::cerr << "Exception: " << ex.what() << std::endl;
@@ -41,8 +43,10 @@ void webserver::async_accept() {
       std::ref(m_io_service));
   m_acceptor.async_accept(
       *m_new_socket,
-      boost::bind(&webserver::handle_accept, this,
-                  boost::asio::placeholders::error));
+      boost::bind(
+          &webserver::handle_accept,
+          this,
+          boost::asio::placeholders::error));
 }
 
 void webserver::handle_accept(boost::system::error_code const& err) {
