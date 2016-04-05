@@ -2,7 +2,11 @@
 #define UDP_SERVER_HPP
 
 #include <boost/asio.hpp>
-#include <boost/array.hpp>
+#include <array>
+
+namespace {
+size_t const buffer_size = 512;
+}
 
 class udp_server : private boost::noncopyable {
  public:
@@ -13,10 +17,11 @@ class udp_server : private boost::noncopyable {
   void handle_receive(
       boost::system::error_code const& error,
       std::size_t bytes_transferred);
+  void parse(std::string str);
   boost::asio::io_service& m_io_service;
   boost::asio::ip::udp::socket m_socket;
   boost::asio::ip::udp::endpoint m_remote_endpoint;
-  std::shared_ptr<boost::array<char, 128> > m_recv_buffer;
+  std::array<char, buffer_size> m_recv_buffer;
 };
 
 #endif

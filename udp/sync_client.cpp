@@ -1,6 +1,7 @@
 #include <iostream>
 #include <thread>
 #include <chrono>
+#include <random>
 
 #include <boost/asio.hpp>
 
@@ -23,8 +24,24 @@ int main(int argc, char* argv[]) {
     boost::asio::ip::udp::socket socket(io_service);
     socket.open(boost::asio::ip::udp::v4());
 
-    for (int i = 0; i < 1000; ++i) {
-      std::string str = std::to_string(i);
+    std::string const alphanum =
+        "0123456789!@#$%^&*ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+
+    std::random_device rd;
+    std::mt19937 gen(rd());
+    std::uniform_int_distribution<> dis(0, alphanum.size() - 1);
+
+    while (true) {
+      std::string str;
+      str += "{\"";
+      for (int i = 0; i < dis(gen); ++i) {
+        str += alphanum.at(dis(gen));
+      }
+      str += "\":\"";
+      for (int i = 0; i < dis(gen); ++i) {
+        str += alphanum.at(dis(gen));
+      }
+      str += "\"}";
       socket.send_to(boost::asio::buffer(str), receiver_endpoint);
       //std::this_thread::sleep_for(std::chrono::milliseconds(1));
     }

@@ -1,14 +1,17 @@
 #include "udp_server.hpp"
 
 #include <iostream>
+#include <string>
 
 #include <boost/bind.hpp>
+#include <boost/property_tree/ptree.hpp>
+#include <boost/property_tree/json_parser.hpp>
 
-void print_buffer(
-    std::shared_ptr<boost::array<char, 128> > recv_buffer,
-    std::size_t bytes_transferred) {
-  std::cout.write(recv_buffer->data(), bytes_transferred);
-  std::cout << std::endl;
+std::ostream& operator<<(
+    std::ostream& os,
+    boost::property_tree::ptree const& child) {
+  write_json(os, child);
+  return os;
 }
 
 udp_server::udp_server(boost::asio::io_service& io_service, int port)
@@ -20,9 +23,8 @@ udp_server::udp_server(boost::asio::io_service& io_service, int port)
 }
 
 void udp_server::async_receive() {
-  m_recv_buffer.reset(new boost::array<char, 128>());
   m_socket.async_receive_from(
-      boost::asio::buffer(*m_recv_buffer),
+      boost::asio::buffer(m_recv_buffer),
       m_remote_endpoint,
       boost::bind(
           &udp_server::handle_receive,
@@ -36,9 +38,23 @@ void udp_server::handle_receive(
     std::size_t bytes_transferred) {
   if (!error) {
     m_io_service.post(
-        boost::bind(&print_buffer, m_recv_buffer, bytes_transferred));
+        boost::bind(
+            &udp_server::parse,
+            this,
+            std::string(m_recv_buffer.data(), bytes_transferred)));
   } else {
     std::cerr << error.message() << std::endl;
   }
   async_receive();
+}
+
+void udp_server::parse(std::string str) {
+  boost::property_tree::ptree child;
+  try {
+    std::istringstream iss(str);
+    read_json(iss, child);
+    std::cout << child << std::endl;
+  } catch (boost::property_tree::json_parser::json_parser_error& error) {
+    //std::cerr << error.message() << std::endl;
+  }
 }
