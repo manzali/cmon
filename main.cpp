@@ -6,7 +6,7 @@
 
 int main(int argc, char* argv[]) {
 
-  int n_threads = 10;
+  int n_threads = 2;
   engine e(n_threads);
 
   int port = 10001;

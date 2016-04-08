@@ -11,7 +11,7 @@ class engine : private boost::noncopyable {
 
  public:
 
-  engine(int n_threads)
+  engine(int n_threads = 1)
       : m_io_service(),
         m_work(m_io_service),
         m_threads(n_threads) {
