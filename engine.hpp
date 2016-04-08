@@ -1,14 +1,16 @@
-#ifndef ENGINE_H
-#define ENGINE_H
+#ifndef ENGINE_HPP
+#define ENGINE_HPP
 
 #include <thread>
 #include <chrono>
 
+#include <boost/core/noncopyable.hpp>
 #include <boost/asio.hpp>
 
 class engine : private boost::noncopyable {
 
  public:
+
   engine(int n_threads)
       : m_io_service(),
         m_work(m_io_service),
@@ -20,7 +22,6 @@ class engine : private boost::noncopyable {
   }
 
   void post() {
-
   }
 
   void stop() {
@@ -41,9 +42,11 @@ class engine : private boost::noncopyable {
   }
 
  private:
+
   boost::asio::io_service m_io_service;
   boost::asio::io_service::work m_work;
   std::vector<std::thread> m_threads;
+
 };
 
 #endif
