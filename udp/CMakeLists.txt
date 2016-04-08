@@ -4,12 +4,12 @@ include_directories(
 )
 
 add_executable(
-  sync_client
-  sync_client.cpp
+  t_udp_client
+  t_udp_client.cpp
 )
 
 target_link_libraries(
-  sync_client
+  t_udp_client
   ${Boost_LIBRARIES}
 )
 
