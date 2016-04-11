@@ -5,9 +5,12 @@
 
 #include <boost/asio.hpp>
 #include <boost/core/noncopyable.hpp>
+#include <boost/property_tree/ptree.hpp>
+
+#include "shared_queue.hpp"
 
 namespace {
-size_t const buffer_size = 512;
+size_t const buffer_size = 64 * 1024;
 }
 
 class udp_server : private boost::noncopyable {
@@ -15,6 +18,7 @@ class udp_server : private boost::noncopyable {
  public:
 
   udp_server(boost::asio::io_service& io_service, int port);
+  boost::property_tree::ptree pop();
 
  private:
 
@@ -24,11 +28,9 @@ class udp_server : private boost::noncopyable {
       std::size_t bytes_transferred);
   void parse(std::string str);
 
-  boost::asio::io_service& m_io_service;
   boost::asio::ip::udp::socket m_socket;
-  boost::asio::ip::udp::endpoint m_remote_endpoint;
   std::array<char, buffer_size> m_recv_buffer;
-
+  shared_queue<boost::property_tree::ptree> m_queue;
 };
 
 #endif
