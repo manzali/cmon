@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 2.6)
+cmake_minimum_required(VERSION 2.8)
 project(CMON CXX)
 set(CMAKE_VERBOSE_MAKEFILE OFF)
 
@@ -32,8 +32,8 @@ else()
     # exit due to fatal error
 endif()
 
-# searching for boost 1.54 or newer
-find_package(Boost 1.54 REQUIRED COMPONENTS system regex thread)
+# searching for boost 1.53 or newer (1.53 is the default version on SL7 and CentOS)
+find_package(Boost 1.53 REQUIRED COMPONENTS system regex thread)
 
 include_directories(
   ${CMON_SOURCE_DIR}
@@ -62,3 +62,4 @@ target_link_libraries(
 )
 
 add_subdirectory(udp)
+add_subdirectory(shared_queue)

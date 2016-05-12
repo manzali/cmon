@@ -4,10 +4,9 @@
 #include <thread>
 #include <chrono>
 
-#include <boost/core/noncopyable.hpp>
 #include <boost/asio.hpp>
 
-class engine : private boost::noncopyable {
+class engine {
 
  public:
 

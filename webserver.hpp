@@ -3,7 +3,7 @@
 
 #include <boost/asio.hpp>
 
-class webserver : private boost::noncopyable {
+class webserver {
  public:
   webserver(boost::asio::io_service& io_service, int port);
 

@@ -8,10 +8,9 @@
 #include <condition_variable>
 
 #include <boost/optional.hpp>
-#include <boost/core/noncopyable.hpp>
 
 template<typename T>
-class shared_queue : private boost::noncopyable {
+class shared_queue {
 
  public:
 
@@ -36,10 +35,14 @@ class shared_queue : private boost::noncopyable {
     return opt;
   }
 
-  boost::optional<T> pop_with_timeout(std::chrono::milliseconds ms) {
+  template<typename Rep, typename Period>
+  boost::optional<T> pop_with_timeout(
+      std::chrono::duration<Rep, Period> const& timeout) {
     std::unique_lock<std::mutex> mlock(m_mutex);
-    if (m_queue.empty()) {
-      m_cond.wait_for(mlock, ms);
+    std::chrono::system_clock::time_point const tp =
+        std::chrono::system_clock::now() + timeout;
+    while (m_queue.empty()
+        && m_cond.wait_until(mlock, tp) != std::cv_status::timeout) {
     }
     boost::optional<T> opt;
     if (m_queue.empty()) {

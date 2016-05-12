@@ -4,16 +4,15 @@
 #include <array>
 
 #include <boost/asio.hpp>
-#include <boost/core/noncopyable.hpp>
 #include <boost/property_tree/ptree.hpp>
 
-#include "shared_queue.hpp"
+#include "shared_queue/shared_queue.hpp"
 
 namespace {
 size_t const buffer_size = 64 * 1024;
 }
 
-class udp_server : private boost::noncopyable {
+class udp_server {
 
  public:
 
